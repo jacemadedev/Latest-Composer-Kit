@@ -12,12 +12,7 @@ export class SupabaseError extends Error {
   }
 
   static fromPostgrestError(error: PostgrestError): SupabaseError {
-    return new SupabaseError(
-      error.message,
-      error.code,
-      error.details,
-      error.hint
-    )
+    return new SupabaseError(error.message, error.code, error.details, error.hint)
   }
 }
 
@@ -33,7 +28,7 @@ export async function withRetry<T>(
     return await operation()
   } catch (error) {
     if (retries > 0) {
-      await new Promise(resolve => setTimeout(resolve, delay))
+      await new Promise((resolve) => setTimeout(resolve, delay))
       return withRetry(operation, retries - 1, delay * 2)
     }
     throw error

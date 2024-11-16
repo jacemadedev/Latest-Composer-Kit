@@ -1,13 +1,20 @@
-import React from "react";
-import { Clock, Share } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react'
+import { Clock, Share } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface OutputDisplayProps {
-  output: string;
-  onShare: () => void;
-  onViewHistory: () => void;
+  output: string
+  onShare: () => void
+  onViewHistory: () => void
 }
 
 export function OutputDisplay({ output, onShare, onViewHistory }: OutputDisplayProps) {
@@ -36,5 +43,5 @@ export function OutputDisplay({ output, onShare, onViewHistory }: OutputDisplayP
         </Button>
       </CardFooter>
     </Card>
-  );
+  )
 }

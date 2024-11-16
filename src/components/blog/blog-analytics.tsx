@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { BarChart3, Bot, FileEdit, Timer } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { AnalyticsStats } from "@/lib/analytics"
-import { AnimatedCard } from "@/components/ui/motion"
+import { BarChart3, Bot, FileEdit, Timer } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { AnalyticsStats } from '@/lib/analytics'
+import { AnimatedCard } from '@/components/ui/motion'
 
 interface BlogAnalyticsProps {
   stats: AnalyticsStats
@@ -21,7 +21,8 @@ export function BlogAnalytics({ stats }: BlogAnalyticsProps) {
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalInteractions}</div>
             <p className="text-xs text-muted-foreground">
-              {stats.previousPeriodComparison > 0 ? '+' : ''}{stats.previousPeriodComparison}% from last month
+              {stats.previousPeriodComparison > 0 ? '+' : ''}
+              {stats.previousPeriodComparison}% from last month
             </p>
           </CardContent>
         </Card>

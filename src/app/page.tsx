@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import React, { Suspense } from "react"
-import { useRouter } from "next/navigation"
-import { AppLayout } from "@/components/layout/app-layout"
-import { PromptFineTuningAppComponent } from "@/components/prompt-fine-tuning-app"
-import { supabase } from "@/lib/supabase"
-import { LoadingBoundary } from "@/components/loading-boundary"
-import { ErrorBoundary } from "@/components/error-boundary"
+import React, { Suspense } from 'react'
+import { useRouter } from 'next/navigation'
+import { AppLayout } from '@/components/layout/app-layout'
+import { PromptFineTuningAppComponent } from '@/components/prompt-fine-tuning-app'
+import { supabase } from '@/lib/supabase'
+import { LoadingBoundary } from '@/components/loading-boundary'
+import { ErrorBoundary } from '@/components/error-boundary'
 
 export default function Page() {
   const router = useRouter()
@@ -25,7 +25,9 @@ function AuthenticatedContent({ router }: { router: ReturnType<typeof useRouter>
 
   React.useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
       if (!session) {
         router.push('/auth')
       } else {
@@ -34,7 +36,9 @@ function AuthenticatedContent({ router }: { router: ReturnType<typeof useRouter>
     }
     checkAuth()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         router.push('/auth')
         setIsAuthenticated(false)
@@ -53,7 +57,7 @@ function AuthenticatedContent({ router }: { router: ReturnType<typeof useRouter>
   }
 
   return (
-    <AppLayout breadcrumb={{ title: "Prompt Editor" }}>
+    <AppLayout breadcrumb={{ title: 'Prompt Editor' }}>
       <Suspense fallback={<div>Loading prompt editor...</div>}>
         <PromptFineTuningAppComponent />
       </Suspense>

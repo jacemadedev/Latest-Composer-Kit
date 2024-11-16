@@ -1,27 +1,29 @@
-import { Stripe, loadStripe } from '@stripe/stripe-js'
+import Stripe from 'stripe'
 
-let stripePromise: Promise<Stripe | null>
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-10-16',
+})
 
-export const getStripe = () => {
-  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  if (!publishableKey) {
-    throw new Error('Stripe publishable key is not configured')
-  }
-
-  if (!stripePromise) {
-    stripePromise = loadStripe(publishableKey)
-  }
-  return stripePromise
-}
-
-export const formatAmountForDisplay = (
-  amount: number,
-  currency: string
-): string => {
-  const numberFormat = new Intl.NumberFormat(['en-US'], {
-    style: 'currency',
-    currency: currency,
-    currencyDisplay: 'symbol',
+export async function createCheckoutSession(amount: number, currency: string) {
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    line_items: [
+      {
+        price_data: {
+          currency,
+          unit_amount: amount,
+          product_data: {
+            name: 'Token Purchase',
+          },
+        },
+        quantity: 1,
+      },
+    ],
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment?success=true`,
+    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment?success=false`,
   })
-  return numberFormat.format(amount)
+
+  return session
 }
+
+export { stripe }

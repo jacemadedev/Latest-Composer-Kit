@@ -1,32 +1,32 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { Eye, EyeOff, Key } from "lucide-react"
-import { useSettingsStore } from "@/lib/store/settings-store"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
+import { useState } from 'react'
+import { Eye, EyeOff, Key } from 'lucide-react'
+import { useSettingsStore } from '@/lib/store/settings-store'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { toast } from '@/components/ui/use-toast'
 
 export function APIKeySettings() {
   const { settings, updateSettings } = useSettingsStore()
   const [showKey, setShowKey] = useState(false)
-  const [openAIKey, setOpenAIKey] = useState(settings.openAIKey || "")
+  const [openAIKey, setOpenAIKey] = useState(settings.openAIKey || '')
 
   const handleSave = () => {
     if (!openAIKey.startsWith('sk-')) {
       toast({
-        title: "Invalid API Key",
+        title: 'Invalid API Key',
         description: "Please enter a valid OpenAI API key starting with 'sk-'.",
-        variant: "destructive",
+        variant: 'destructive',
       })
       return
     }
 
     updateSettings({ openAIKey })
     toast({
-      title: "API Key Updated",
-      description: "Your OpenAI API key has been saved successfully.",
+      title: 'API Key Updated',
+      description: 'Your OpenAI API key has been saved successfully.',
     })
 
     // Reload the page to reinitialize the OpenAI client
@@ -34,11 +34,11 @@ export function APIKeySettings() {
   }
 
   const handleClear = () => {
-    setOpenAIKey("")
+    setOpenAIKey('')
     updateSettings({ openAIKey: undefined })
     toast({
-      title: "API Key Cleared",
-      description: "Using default API key now.",
+      title: 'API Key Cleared',
+      description: 'Using default API key now.',
     })
     window.location.reload()
   }
@@ -53,22 +53,14 @@ export function APIKeySettings() {
               Enter your OpenAI API key to use your own account
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowKey(!showKey)}
-          >
-            {showKey ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
+          <Button variant="ghost" size="icon" onClick={() => setShowKey(!showKey)}>
+            {showKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </Button>
         </div>
         <div className="flex space-x-2">
           <div className="relative flex-1">
             <Input
-              type={showKey ? "text" : "password"}
+              type={showKey ? 'text' : 'password'}
               value={openAIKey}
               onChange={(e) => setOpenAIKey(e.target.value)}
               placeholder="sk-..."
@@ -84,7 +76,7 @@ export function APIKeySettings() {
         </div>
         <p className="text-xs text-muted-foreground">
           Your API key is stored locally and never sent to our servers.
-          {settings.openAIKey ? " Using your custom API key." : " Using default API key."}
+          {settings.openAIKey ? ' Using your custom API key.' : ' Using default API key.'}
         </p>
       </div>
     </div>

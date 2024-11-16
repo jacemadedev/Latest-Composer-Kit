@@ -13,14 +13,13 @@ export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
   try {
     const supabase = createRouteHandlerClient<Database>({ cookies })
-    
+
     // Check authentication
-    const { data: { session } } = await supabase.auth.getSession()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
     if (!session) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // Rate limiting
@@ -29,12 +28,12 @@ export async function POST(req: NextRequest) {
     if (!success) {
       return NextResponse.json(
         { error: 'Too many requests' },
-        { 
+        {
           status: 429,
           headers: {
             'X-RateLimit-Remaining': remaining.toString(),
-            'Retry-After': '60'
-          }
+            'Retry-After': '60',
+          },
         }
       )
     }
@@ -47,10 +46,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Generate response
-    const response = await generatePromptResponse(
-      validatedData.prompt,
-      validatedData.model
-    )
+    const response = await generatePromptResponse(validatedData.prompt, validatedData.model)
 
     // Save to database
     const { data, error } = await supabase
@@ -68,19 +64,19 @@ export async function POST(req: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({ 
-      data,
-      remaining
-    }, {
-      headers: {
-        'X-RateLimit-Remaining': remaining.toString()
+    return NextResponse.json(
+      {
+        data,
+        remaining,
+      },
+      {
+        headers: {
+          'X-RateLimit-Remaining': remaining.toString(),
+        },
       }
-    })
+    )
   } catch (error) {
     const appError = handleError(error)
-    return NextResponse.json(
-      { error: appError.message },
-      { status: appError.statusCode }
-    )
+    return NextResponse.json({ error: appError.message }, { status: appError.statusCode })
   }
 }

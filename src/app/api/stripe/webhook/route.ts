@@ -1,5 +1,4 @@
 import { headers } from 'next/headers'
-import { NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Stripe from 'stripe'
@@ -18,14 +17,13 @@ export async function POST(req: Request) {
     let event: Stripe.Event
 
     try {
-      event = stripe.webhooks.constructEvent(
-        body,
-        signature,
-        webhookSecret
-      )
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
     } catch (err) {
       console.error('Webhook signature verification failed:', err)
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
+      return new Response(JSON.stringify({ error: 'Invalid signature' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     const supabase = createRouteHandlerClient({ cookies })
@@ -40,21 +38,39 @@ export async function POST(req: Request) {
           throw new Error('No user ID in session metadata')
         }
 
+        // First get current tokens
+        const { data: currentData, error: fetchError } = await supabase
+          .from('user_settings')
+          .select('tokens')
+          .eq('user_id', userId)
+          .single()
+
+        if (fetchError) {
+          console.error('Error fetching current tokens:', fetchError)
+          return new Response(JSON.stringify({ error: 'Failed to fetch token balance' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+          })
+        }
+
+        const currentTokens = currentData?.tokens || 0
+        const newTokens = currentTokens + 50000
+
         // Update user's token balance
-        const { error } = await supabase
+        const { error: updateError } = await supabase
           .from('user_settings')
           .update({
-            tokens: supabase.sql`tokens + 50000`, // Add 50,000 tokens
-            updated_at: new Date().toISOString()
+            tokens: newTokens,
+            updated_at: new Date().toISOString(),
           })
           .eq('user_id', userId)
 
-        if (error) {
-          console.error('Error updating token balance:', error)
-          return NextResponse.json(
-            { error: 'Failed to update token balance' },
-            { status: 500 }
-          )
+        if (updateError) {
+          console.error('Error updating token balance:', updateError)
+          return new Response(JSON.stringify({ error: 'Failed to update token balance' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+          })
         }
         break
       }
@@ -81,12 +97,14 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ received: true })
+    return new Response(JSON.stringify({ received: true }), {
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (error) {
     console.error('Webhook error:', error)
-    return NextResponse.json(
-      { error: 'Webhook handler failed' },
-      { status: 500 }
-    )
+    return new Response(JSON.stringify({ error: 'Webhook handler failed' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 }

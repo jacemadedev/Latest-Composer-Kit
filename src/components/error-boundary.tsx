@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React from 'react'
 import { AlertTriangle } from 'lucide-react'
@@ -36,7 +36,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       }
 
       return (
-        <Card className="w-full max-w-md mx-auto mt-8">
+        <Card className="mx-auto mt-8 w-full max-w-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-destructive" />

@@ -1,43 +1,48 @@
-"use client"
+'use client'
 
-import dynamic from "next/dynamic"
-import { useState, useEffect, Suspense } from "react"
-import { useRouter } from "next/navigation"
-import { toast } from "@/components/ui/use-toast"
-import { Bot, FileCode2, PenTool, SquareTerminal } from "lucide-react"
-import { generatePromptResponse } from "@/lib/openai"
-import { savePrompt } from "@/lib/supabase/prompts"
-import { useSettingsStore } from "@/lib/store/settings-store"
-import { supabase } from "@/lib/supabase"
-import { getAnalytics, AnalyticsStats } from "@/lib/analytics"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { AnimatedCard, AnimatedSection, fadeIn } from "@/components/ui/motion"
-import { CardLoadingFallback } from "@/components/loading-boundary"
+import dynamic from 'next/dynamic'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from '@/components/ui/use-toast'
+import { Bot, FileCode2, PenTool, SquareTerminal } from 'lucide-react'
+import { generatePromptResponse } from '@/lib/openai'
+import { savePrompt } from '@/lib/supabase/prompts'
+import { useSettingsStore } from '@/lib/store/settings-store'
+import { supabase } from '@/lib/supabase'
+import { getAnalytics, AnalyticsStats } from '@/lib/analytics'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { AnimatedCard, AnimatedSection, fadeIn } from '@/components/ui/motion'
+import { CardLoadingFallback } from '@/components/loading-boundary'
 
-const PromptForm = dynamic(() => import("./prompt-editor/prompt-form").then(mod => mod.PromptForm), {
-  loading: () => <CardLoadingFallback />,
-  ssr: false
-})
+const PromptForm = dynamic(
+  () => import('./prompt-editor/prompt-form').then((mod) => mod.PromptForm),
+  {
+    loading: () => <CardLoadingFallback />,
+    ssr: false,
+  }
+)
 
-const OutputDisplay = dynamic(() => import("./prompt-editor/output-display").then(mod => mod.OutputDisplay), {
-  loading: () => <CardLoadingFallback />,
-  ssr: false
-})
+const OutputDisplay = dynamic(
+  () => import('./prompt-editor/output-display').then((mod) => mod.OutputDisplay),
+  {
+    loading: () => <CardLoadingFallback />,
+    ssr: false,
+  }
+)
 
 export function PromptFineTuningAppComponent() {
   const router = useRouter()
-  const [prompt, setPrompt] = useState("")
-  const [output, setOutput] = useState("")
+  const [prompt, setPrompt] = useState('')
+  const [output, setOutput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [stats, setStats] = useState<AnalyticsStats>({
     totalInteractions: 0,
     averageResponseTime: 0,
     tokenUsage: 0,
     successRate: 100,
-    previousPeriodComparison: 0
+    previousPeriodComparison: 0,
   })
-  
+
   const { settings } = useSettingsStore()
   const [model, setModel] = useState<'gpt-4' | 'gpt-3.5-turbo'>(settings.defaultModel)
 
@@ -46,7 +51,9 @@ export function PromptFineTuningAppComponent() {
 
     async function loadStats() {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
         if (!user) return
 
         const analyticsData = await getAnalytics(user.id)
@@ -76,36 +83,38 @@ export function PromptFineTuningAppComponent() {
   const handleFineTune = async () => {
     if (!prompt.trim()) {
       toast({
-        title: "Error",
-        description: "Please enter a prompt before fine-tuning.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Please enter a prompt before fine-tuning.',
+        variant: 'destructive',
       })
       return
     }
 
     setIsLoading(true)
-    
+
     try {
       const response = await generatePromptResponse(prompt, model)
       setOutput(response.content)
-      
+
       await savePrompt(prompt, response)
 
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (user) {
         const updatedStats = await getAnalytics(user.id)
         setStats(updatedStats)
       }
 
       toast({
-        title: "Success",
-        description: "Prompt fine-tuned successfully!",
+        title: 'Success',
+        description: 'Prompt fine-tuned successfully!',
       })
     } catch (error) {
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to generate response",
-        variant: "destructive",
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to generate response',
+        variant: 'destructive',
       })
     } finally {
       setIsLoading(false)
@@ -114,16 +123,16 @@ export function PromptFineTuningAppComponent() {
 
   const handleSaveDraft = () => {
     toast({
-      title: "Draft Saved",
-      description: "Your prompt draft has been saved.",
+      title: 'Draft Saved',
+      description: 'Your prompt draft has been saved.',
     })
   }
 
   const handleShare = () => {
     navigator.clipboard.writeText(output)
     toast({
-      title: "Copied to Clipboard",
-      description: "The output has been copied to your clipboard.",
+      title: 'Copied to Clipboard',
+      description: 'The output has been copied to your clipboard.',
     })
   }
 
@@ -149,7 +158,8 @@ export function PromptFineTuningAppComponent() {
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalInteractions}</div>
               <p className="text-xs text-muted-foreground">
-                {stats.previousPeriodComparison > 0 ? '+' : ''}{stats.previousPeriodComparison.toFixed(1)}% from last month
+                {stats.previousPeriodComparison > 0 ? '+' : ''}
+                {stats.previousPeriodComparison.toFixed(1)}% from last month
               </p>
             </CardContent>
           </Card>

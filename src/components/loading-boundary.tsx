@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React, { Suspense } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -9,11 +9,7 @@ interface LoadingBoundaryProps {
 }
 
 export function LoadingBoundary({ children, fallback }: LoadingBoundaryProps) {
-  return (
-    <Suspense fallback={fallback || <DefaultLoadingFallback />}>
-      {children}
-    </Suspense>
-  )
+  return <Suspense fallback={fallback || <DefaultLoadingFallback />}>{children}</Suspense>
 }
 
 function DefaultLoadingFallback() {
@@ -47,5 +43,5 @@ export function TableLoadingFallback() {
 }
 
 export function ImageLoadingFallback() {
-  return <Skeleton className="h-full w-full min-h-[200px]" />
+  return <Skeleton className="h-full min-h-[200px] w-full" />
 }

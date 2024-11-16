@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Editor } from '@tiptap/react'
 import {
@@ -27,7 +27,7 @@ export function BlogEditorToolbar({ editor }: BlogEditorToolbarProps) {
   }
 
   return (
-    <div className="border border-input bg-transparent rounded-md p-1 flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-1 rounded-md border border-input bg-transparent p-1">
       <Toggle
         size="sm"
         pressed={editor.isActive('bold')}

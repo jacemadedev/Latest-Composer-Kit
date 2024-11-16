@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { Coins } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { TokenPurchaseModal } from "./token-purchase-modal"
-import { supabase } from "@/lib/supabase"
-import { toast } from "@/components/ui/use-toast"
-import { UserSettings } from "@/lib/supabase/types"
+import { useEffect, useState } from 'react'
+import { Coins } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { TokenPurchaseModal } from './token-purchase-modal'
+import { supabase } from '@/lib/supabase'
+import { toast } from '@/components/ui/use-toast'
+import { UserSettings } from '@/lib/supabase/types'
 
 export function TokenDisplay() {
   const [tokens, setTokens] = useState(10000) // Default free tokens
@@ -15,7 +15,9 @@ export function TokenDisplay() {
   useEffect(() => {
     const loadTokens = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
         if (!user) return
 
         // Try to get existing settings
@@ -33,7 +35,7 @@ export function TokenDisplay() {
               tokens: 10000,
               default_model: 'gpt-4',
               theme: 'system',
-              save_history: true
+              save_history: true,
             }
 
             const { data: newData, error: insertError } = await supabase
@@ -53,9 +55,9 @@ export function TokenDisplay() {
       } catch (error) {
         console.error('Error loading tokens:', error)
         toast({
-          title: "Error",
-          description: "Failed to load token balance",
-          variant: "destructive",
+          title: 'Error',
+          description: 'Failed to load token balance',
+          variant: 'destructive',
         })
       } finally {
         setIsLoading(false)
@@ -75,11 +77,9 @@ export function TokenDisplay() {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-2xl font-bold">
-              {isLoading ? "Loading..." : tokens.toLocaleString()}
+              {isLoading ? 'Loading...' : tokens.toLocaleString()}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Remaining tokens for AI generations
-            </p>
+            <p className="text-xs text-muted-foreground">Remaining tokens for AI generations</p>
           </div>
           <TokenPurchaseModal />
         </div>

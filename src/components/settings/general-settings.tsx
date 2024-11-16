@@ -1,17 +1,17 @@
-"use client"
+'use client'
 
-import { useTheme } from "next-themes"
-import { useSettingsStore } from "@/lib/store/settings-store"
-import { Label } from "@/components/ui/label"
+import { useTheme } from 'next-themes'
+import { useSettingsStore } from '@/lib/store/settings-store'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { useEffect } from "react"
+} from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import { useEffect } from 'react'
 
 export function GeneralSettings() {
   const { settings, updateSettings } = useSettingsStore()
@@ -32,7 +32,9 @@ export function GeneralSettings() {
         <Label>Default Model</Label>
         <Select
           value={settings.defaultModel}
-          onValueChange={(value: 'gpt-4' | 'gpt-3.5-turbo') => updateSettings({ defaultModel: value })}
+          onValueChange={(value: 'gpt-4' | 'gpt-3.5-turbo') =>
+            updateSettings({ defaultModel: value })
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Select model" />
@@ -46,10 +48,7 @@ export function GeneralSettings() {
 
       <div className="space-y-2">
         <Label>Theme</Label>
-        <Select
-          value={settings.theme}
-          onValueChange={handleThemeChange}
-        >
+        <Select value={settings.theme} onValueChange={handleThemeChange}>
           <SelectTrigger>
             <SelectValue placeholder="Select theme" />
           </SelectTrigger>
@@ -64,9 +63,7 @@ export function GeneralSettings() {
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <Label>Save History</Label>
-          <div className="text-sm text-muted-foreground">
-            Store your prompt history locally
-          </div>
+          <div className="text-sm text-muted-foreground">Store your prompt history locally</div>
         </div>
         <Switch
           checked={settings.saveHistory}

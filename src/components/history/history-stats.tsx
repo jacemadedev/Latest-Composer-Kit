@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
-import React, { useEffect, useState } from "react"
-import { BarChart3, Clock, MessagesSquare, Zap } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { supabase } from "@/lib/supabase"
-import { getAnalytics, AnalyticsStats } from "@/lib/analytics"
-import { Skeleton } from "@/components/ui/skeleton"
-import { toast } from "@/components/ui/use-toast"
-import { subscribeToPrompts } from "@/lib/supabase/realtime"
+import React, { useEffect, useState } from 'react'
+import { BarChart3, Clock, MessagesSquare, Zap } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { supabase } from '@/lib/supabase'
+import { getAnalytics, AnalyticsStats } from '@/lib/analytics'
+import { Skeleton } from '@/components/ui/skeleton'
+import { toast } from '@/components/ui/use-toast'
+import { subscribeToPrompts } from '@/lib/supabase/realtime'
 
 const DEFAULT_STATS: AnalyticsStats = {
   totalInteractions: 0,
   averageResponseTime: 0,
   tokenUsage: 0,
   successRate: 0,
-  previousPeriodComparison: 0
+  previousPeriodComparison: 0,
 }
 
 export function HistoryStats() {
@@ -26,12 +26,14 @@ export function HistoryStats() {
   useEffect(() => {
     async function loadStats() {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
         if (!user) {
           toast({
-            title: "Authentication Error",
-            description: "Please sign in to view your stats.",
-            variant: "destructive",
+            title: 'Authentication Error',
+            description: 'Please sign in to view your stats.',
+            variant: 'destructive',
           })
           return
         }
@@ -41,13 +43,13 @@ export function HistoryStats() {
       } catch (error) {
         console.error('Failed to load stats:', error)
         if (retryCount < MAX_RETRIES) {
-          setRetryCount(prev => prev + 1)
+          setRetryCount((prev) => prev + 1)
           setTimeout(loadStats, 1000 * (retryCount + 1)) // Exponential backoff
         } else {
           toast({
-            title: "Error Loading Stats",
-            description: "Please try refreshing the page.",
-            variant: "destructive",
+            title: 'Error Loading Stats',
+            description: 'Please try refreshing the page.',
+            variant: 'destructive',
           })
         }
       } finally {
@@ -60,7 +62,9 @@ export function HistoryStats() {
     // Subscribe to real-time updates
     const unsubscribe = subscribeToPrompts(async (payload) => {
       if (payload.eventType === 'INSERT' || payload.eventType === 'DELETE') {
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
         if (user) {
           const updatedStats = await getAnalytics(user.id)
           setStats(updatedStats)
@@ -76,9 +80,11 @@ export function HistoryStats() {
   if (isLoading) {
     return (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {Array(4).fill(0).map((_, i) => (
-          <Skeleton key={i} className="h-32" />
-        ))}
+        {Array(4)
+          .fill(0)
+          .map((_, i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
       </div>
     )
   }
@@ -93,7 +99,8 @@ export function HistoryStats() {
         <CardContent>
           <div className="text-2xl font-bold">{stats.totalInteractions}</div>
           <p className="text-xs text-muted-foreground">
-            {stats.previousPeriodComparison > 0 ? '+' : ''}{stats.previousPeriodComparison}% from last month
+            {stats.previousPeriodComparison > 0 ? '+' : ''}
+            {stats.previousPeriodComparison}% from last month
           </p>
         </CardContent>
       </Card>

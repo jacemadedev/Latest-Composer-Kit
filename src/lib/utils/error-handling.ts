@@ -27,10 +27,7 @@ export function handleError(error: unknown): AppError {
   return AppError.fromError(error)
 }
 
-export async function withErrorHandling<T>(
-  operation: () => Promise<T>,
-  errorMessage = 'Operation failed'
-): Promise<T> {
+export async function withErrorHandling<T>(operation: () => Promise<T>): Promise<T> {
   try {
     return await operation()
   } catch (error) {

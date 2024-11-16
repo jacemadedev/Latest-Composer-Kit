@@ -2,7 +2,7 @@
 
 A modern, feature-rich Next.js 14 boilerplate with authentication, API rate limiting, and a beautiful UI powered by shadcn/ui.
 
-## Features ##
+## Features
 
 - 🚀 **Next.js 14** with App Router
 - 🔐 **Authentication** via Supabase
@@ -33,21 +33,25 @@ A modern, feature-rich Next.js 14 boilerplate with authentication, API rate limi
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/composer-kit.git
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Copy the environment variables:
+
 ```bash
 cp .env.example .env.local
 ```
 
 4. Update the environment variables in `.env.local`:
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -56,6 +60,7 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 ```
 
 5. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -69,7 +74,7 @@ src/
 ├── app/                 # Next.js 14 app directory
 │   ├── api/            # API routes
 │   ├── auth/           # Authentication pages
-│   └── ...            
+│   └── ...
 ├── components/         # React components
 │   ├── ui/            # Reusable UI components
 │   └── ...
@@ -101,37 +106,44 @@ This project can be deployed to any platform that supports Next.js, such as:
 ## Suggested Improvements
 
 1. **Authentication Enhancements**
+
    - Social login providers (Google, GitHub)
    - Magic link authentication
    - Two-factor authentication
 
 2. **Performance Optimizations**
+
    - Implement React Suspense boundaries
    - Add image optimization
    - Configure Webpack bundle analyzer
 
 3. **Testing**
+
    - Add Jest for unit testing
    - Implement React Testing Library
    - Add Cypress for E2E testing
 
 4. **Security**
+
    - Add CSRF protection
    - Implement security headers
    - Add input sanitization
 
 5. **Developer Experience**
+
    - Add Storybook for component documentation
    - Implement Git hooks with Husky
    - Add automated changelog generation
 
 6. **Features**
+
    - Add real-time subscriptions with Supabase
    - Implement file upload functionality
    - Add search functionality
    - Create admin dashboard
 
 7. **Monitoring**
+
    - Add error tracking (Sentry)
    - Implement analytics
    - Add performance monitoring

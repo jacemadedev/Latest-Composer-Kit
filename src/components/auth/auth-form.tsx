@@ -1,20 +1,27 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { toast } from "@/components/ui/use-toast"
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { toast } from '@/components/ui/use-toast'
 
 export function AuthForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,11 +40,11 @@ export function AuthForm() {
 
         if (data.session) {
           // If session is available immediately (email confirmation not required)
-          router.push("/")
+          router.push('/')
           router.refresh()
         } else {
           toast({
-            title: "Check your email",
+            title: 'Check your email',
             description: "We've sent you a confirmation link.",
           })
         }
@@ -47,15 +54,15 @@ export function AuthForm() {
           password,
         })
         if (error) throw error
-        
-        router.push("/")
+
+        router.push('/')
         router.refresh()
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Authentication failed",
-        variant: "destructive",
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Authentication failed',
+        variant: 'destructive',
       })
     } finally {
       setIsLoading(false)
@@ -65,11 +72,11 @@ export function AuthForm() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{isSignUp ? "Create an account" : "Sign in"}</CardTitle>
+        <CardTitle>{isSignUp ? 'Create an account' : 'Sign in'}</CardTitle>
         <CardDescription>
           {isSignUp
-            ? "Enter your email below to create your account"
-            : "Enter your email below to sign in to your account"}
+            ? 'Enter your email below to create your account'
+            : 'Enter your email below to sign in to your account'}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleAuth}>
@@ -101,12 +108,8 @@ export function AuthForm() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <Button 
-            type="submit" 
-            className="w-full" 
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading..." : isSignUp ? "Sign up" : "Sign in"}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? 'Loading...' : isSignUp ? 'Sign up' : 'Sign in'}
           </Button>
           <Button
             type="button"
@@ -115,7 +118,7 @@ export function AuthForm() {
             onClick={() => setIsSignUp(!isSignUp)}
             disabled={isLoading}
           >
-            {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
+            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
           </Button>
         </CardFooter>
       </form>

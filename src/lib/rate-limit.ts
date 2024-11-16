@@ -15,18 +15,11 @@ const DEFAULT_CONFIG: RateLimitConfig = {
   limit: 100,
 }
 
-export async function rateLimit(
-  identifier: string,
-  config: RateLimitConfig = DEFAULT_CONFIG
-) {
+export async function rateLimit(identifier: string, config: RateLimitConfig = DEFAULT_CONFIG) {
   const key = `rate-limit:${identifier}`
 
   try {
-    const [response] = await redis
-      .multi()
-      .incr(key)
-      .expire(key, config.interval)
-      .exec()
+    const [response] = await redis.multi().incr(key).expire(key, config.interval).exec()
 
     const attempts = response as number
     const success = attempts <= config.limit

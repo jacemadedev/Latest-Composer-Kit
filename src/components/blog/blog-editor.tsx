@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -37,7 +37,8 @@ export function BlogEditor({ content, onChange, isLoading = false }: BlogEditorP
     content: '',
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[500px] p-4',
+        class:
+          'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[500px] p-4',
       },
     },
     onUpdate: ({ editor }) => {
@@ -61,13 +62,13 @@ export function BlogEditor({ content, onChange, isLoading = false }: BlogEditorP
   }
 
   return (
-    <Card className="min-h-[600px] flex flex-col">
+    <Card className="flex min-h-[600px] flex-col">
       <CardHeader>
         <CardTitle>Blog Post Editor</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow flex flex-col gap-4">
+      <CardContent className="flex flex-grow flex-col gap-4">
         <BlogEditorToolbar editor={editor} />
-        <div className="flex-grow border rounded-lg overflow-y-auto bg-background">
+        <div className="flex-grow overflow-y-auto rounded-lg border bg-background">
           <EditorContent editor={editor} />
         </div>
       </CardContent>

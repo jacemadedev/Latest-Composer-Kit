@@ -1,18 +1,18 @@
-"use client"
+'use client'
 
-import dynamic from "next/dynamic"
-import { Suspense } from "react"
-import { AnimatedSection, fadeIn } from "@/components/ui/motion"
-import { CardLoadingFallback, TableLoadingFallback } from "@/components/loading-boundary"
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+import { AnimatedSection, fadeIn } from '@/components/ui/motion'
+import { CardLoadingFallback, TableLoadingFallback } from '@/components/loading-boundary'
 
-const HistoryStats = dynamic(() => import("./history-stats").then(mod => mod.HistoryStats), {
+const HistoryStats = dynamic(() => import('./history-stats').then((mod) => mod.HistoryStats), {
   loading: () => <CardLoadingFallback />,
-  ssr: false
+  ssr: false,
 })
 
-const HistoryList = dynamic(() => import("./history-list").then(mod => mod.HistoryList), {
+const HistoryList = dynamic(() => import('./history-list').then((mod) => mod.HistoryList), {
   loading: () => <TableLoadingFallback />,
-  ssr: false
+  ssr: false,
 })
 
 export function HistoryPage() {

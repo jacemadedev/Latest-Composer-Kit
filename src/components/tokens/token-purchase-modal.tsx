@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { useState } from "react"
-import { CreditCard, Coins, Package } from "lucide-react"
+import * as React from 'react'
+import { useState } from 'react'
+import { CreditCard, Coins } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -10,12 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { toast } from "@/components/ui/use-toast"
-import { Badge } from "@/components/ui/badge"
-import { supabase } from "@/lib/supabase"
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { toast } from '@/components/ui/use-toast'
+import { Badge } from '@/components/ui/badge'
+import { supabase } from '@/lib/supabase'
 
 interface TokenPurchaseModalProps {
   children?: React.ReactNode
@@ -30,7 +30,9 @@ export function TokenPurchaseModal({ children }: TokenPurchaseModalProps) {
       setIsLoading(true)
 
       // Get the current session
-      const { data: { session } } = await supabase.auth.getSession()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
       if (!session) {
         throw new Error('You must be logged in to purchase tokens')
       }
@@ -39,7 +41,7 @@ export function TokenPurchaseModal({ children }: TokenPurchaseModalProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           email: session.user.email,
@@ -67,9 +69,9 @@ export function TokenPurchaseModal({ children }: TokenPurchaseModalProps) {
     } catch (error) {
       console.error('Purchase error:', error)
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to process payment",
-        variant: "destructive",
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to process payment',
+        variant: 'destructive',
       })
     } finally {
       setIsLoading(false)
@@ -122,13 +124,9 @@ export function TokenPurchaseModal({ children }: TokenPurchaseModalProps) {
               </div>
             </CardContent>
             <CardFooter>
-              <Button 
-                className="w-full gap-2" 
-                onClick={handlePurchase}
-                disabled={isLoading}
-              >
+              <Button className="w-full gap-2" onClick={handlePurchase} disabled={isLoading}>
                 <CreditCard className="h-4 w-4" />
-                {isLoading ? "Processing..." : "Purchase Now"}
+                {isLoading ? 'Processing...' : 'Purchase Now'}
               </Button>
             </CardFooter>
           </Card>

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState } from 'react'
 import { Bot, Wand2 } from 'lucide-react'
@@ -26,15 +26,15 @@ export function BlogGenerator({ onGenerate, onStatsUpdate }: BlogGeneratorProps)
   const handleGenerate = async () => {
     if (!title.trim() || !topic.trim()) {
       toast({
-        title: "Missing Information",
-        description: "Please provide both a title and topic for your blog post.",
-        variant: "destructive",
+        title: 'Missing Information',
+        description: 'Please provide both a title and topic for your blog post.',
+        variant: 'destructive',
       })
       return
     }
 
     setIsLoading(true)
-    
+
     try {
       const prompt = `
         Write a detailed blog post with the following specifications:
@@ -53,9 +53,11 @@ export function BlogGenerator({ onGenerate, onStatsUpdate }: BlogGeneratorProps)
       `.trim()
 
       const response = await generateBlogPost(prompt)
-      
+
       // Save to database
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (user) {
         await supabase.from('prompts').insert({
           user_id: user.id,
@@ -64,7 +66,7 @@ export function BlogGenerator({ onGenerate, onStatsUpdate }: BlogGeneratorProps)
           model: response.model,
           tokens: response.tokens,
           response_time: response.responseTime,
-          type: 'blog'
+          type: 'blog',
         })
 
         // Update stats
@@ -73,10 +75,10 @@ export function BlogGenerator({ onGenerate, onStatsUpdate }: BlogGeneratorProps)
       }
 
       onGenerate(response.content)
-      
+
       toast({
-        title: "Success",
-        description: "Your blog post has been generated successfully!",
+        title: 'Success',
+        description: 'Your blog post has been generated successfully!',
       })
 
       // Clear the form
@@ -86,9 +88,9 @@ export function BlogGenerator({ onGenerate, onStatsUpdate }: BlogGeneratorProps)
     } catch (error) {
       console.error('Blog generation error:', error)
       toast({
-        title: "Generation Failed",
-        description: error instanceof Error ? error.message : "Failed to generate blog post",
-        variant: "destructive",
+        title: 'Generation Failed',
+        description: error instanceof Error ? error.message : 'Failed to generate blog post',
+        variant: 'destructive',
       })
     } finally {
       setIsLoading(false)
@@ -133,11 +135,7 @@ export function BlogGenerator({ onGenerate, onStatsUpdate }: BlogGeneratorProps)
         </div>
       </CardContent>
       <CardFooter>
-        <Button 
-          className="w-full" 
-          onClick={handleGenerate}
-          disabled={isLoading}
-        >
+        <Button className="w-full" onClick={handleGenerate} disabled={isLoading}>
           {isLoading ? (
             <>
               <Bot className="mr-2 h-4 w-4 animate-spin" />

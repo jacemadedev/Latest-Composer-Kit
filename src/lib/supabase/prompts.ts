@@ -15,7 +15,9 @@ export interface PromptRecord {
 
 export async function savePrompt(prompt: string, response: PromptResponse) {
   return withRetry(async () => {
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) throw new SupabaseError('User not authenticated')
 
     const { data, error } = await supabase
@@ -38,7 +40,9 @@ export async function savePrompt(prompt: string, response: PromptResponse) {
 
 export async function getPromptHistory() {
   return withRetry(async () => {
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) throw new SupabaseError('User not authenticated')
 
     const { data, error } = await supabase
@@ -54,14 +58,12 @@ export async function getPromptHistory() {
 
 export async function deletePrompt(id: string) {
   return withRetry(async () => {
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) throw new SupabaseError('User not authenticated')
 
-    const { error } = await supabase
-      .from('prompts')
-      .delete()
-      .eq('id', id)
-      .eq('user_id', user.id)
+    const { error } = await supabase.from('prompts').delete().eq('id', id).eq('user_id', user.id)
 
     if (error) throw SupabaseError.fromPostgrestError(error)
   })

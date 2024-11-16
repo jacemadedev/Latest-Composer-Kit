@@ -1,4 +1,4 @@
-import { HTMLMotionProps, motion } from "framer-motion"
+import { HTMLMotionProps, motion } from 'framer-motion'
 
 export const fadeIn = {
   initial: { opacity: 0 },
@@ -21,7 +21,7 @@ export const scaleIn = {
 export const MotionDiv = motion.div
 export const MotionSection = motion.section
 
-export interface AnimatedCardProps extends HTMLMotionProps<"div"> {
+export interface AnimatedCardProps extends HTMLMotionProps<'div'> {
   children: React.ReactNode
 }
 

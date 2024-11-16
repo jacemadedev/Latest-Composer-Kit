@@ -6,7 +6,7 @@ import { Database } from './database.types'
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient<Database>({ req, res })
-  
+
   // Check if we have a session
   const {
     data: { session },
